@@ -3,27 +3,19 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Activity,
   AlertTriangle,
-  Bell,
-  Building2,
   Calendar,
-  CheckCircle2,
   ChevronRight,
-  CircleDollarSign,
   Clock3,
   Filter,
-  HeartPulse,
   Home,
   KanbanSquare,
   MessageSquare,
-  Phone,
   Search,
   Sparkles,
   Target,
   TrendingDown,
   TrendingUp,
-  UserRound,
   Users,
-  Wallet,
 } from "lucide-react";
 import {
   ResponsiveContainer,
@@ -44,7 +36,7 @@ import {
 } from "recharts";
 import ClientAppPreview from "./ClientAppPreview";
 
-const COLORS = ["#0f172a", "#2563eb", "#10b981", "#f59e0b", "#ef4444", "#8b5cf6"];
+const COLORS = ["#e2e8f0", "#60a5fa", "#34d399", "#fbbf24", "#f87171", "#a78bfa"];
 
 function cn(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -60,7 +52,12 @@ function formatCurrency(n) {
 
 function Card({ className = "", children }) {
   return (
-    <div className={cn("rounded-2xl border border-slate-200 bg-white shadow-sm", className)}>
+    <div
+      className={cn(
+        "rounded-2xl border border-slate-800 bg-slate-900/80 shadow-[0_6px_24px_rgba(0,0,0,0.25)] backdrop-blur",
+        className
+      )}
+    >
       {children}
     </div>
   );
@@ -68,10 +65,10 @@ function Card({ className = "", children }) {
 
 function CardHeader({ title, subtitle, right }) {
   return (
-    <div className="flex items-start justify-between gap-4 border-b border-slate-100 px-5 py-4">
+    <div className="flex items-start justify-between gap-4 border-b border-slate-800 px-5 py-4">
       <div>
-        <div className="text-sm font-semibold text-slate-900">{title}</div>
-        {subtitle ? <div className="mt-1 text-xs text-slate-500">{subtitle}</div> : null}
+        <div className="text-sm font-semibold text-slate-100">{title}</div>
+        {subtitle ? <div className="mt-1 text-xs text-slate-400">{subtitle}</div> : null}
       </div>
       {right}
     </div>
@@ -80,24 +77,29 @@ function CardHeader({ title, subtitle, right }) {
 
 function Badge({ children, tone = "default" }) {
   const map = {
-    default: "bg-slate-100 text-slate-700 border-slate-200",
-    green: "bg-emerald-50 text-emerald-700 border-emerald-200",
-    blue: "bg-blue-50 text-blue-700 border-blue-200",
-    amber: "bg-amber-50 text-amber-700 border-amber-200",
-    red: "bg-rose-50 text-rose-700 border-rose-200",
-    purple: "bg-violet-50 text-violet-700 border-violet-200",
+    default: "bg-slate-800 text-slate-300 border-slate-700",
+    green: "bg-emerald-500/10 text-emerald-300 border-emerald-500/30",
+    blue: "bg-blue-500/10 text-blue-300 border-blue-500/30",
+    amber: "bg-amber-500/10 text-amber-300 border-amber-500/30",
+    red: "bg-rose-500/10 text-rose-300 border-rose-500/30",
+    purple: "bg-violet-500/10 text-violet-300 border-violet-500/30",
   };
   return (
-    <span className={cn("inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-xs font-medium", map[tone])}>
+    <span
+      className={cn(
+        "inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-xs font-medium",
+        map[tone]
+      )}
+    >
       {children}
     </span>
   );
 }
 
-function ProgressBar({ value, className = "", fillClassName = "bg-slate-900" }) {
+function ProgressBar({ value, className = "", fillClassName = "bg-slate-200" }) {
   const clamped = Math.max(0, Math.min(100, value));
   return (
-    <div className={cn("h-2 rounded-full bg-slate-100", className)}>
+    <div className={cn("h-2 rounded-full bg-slate-800", className)}>
       <div className={cn("h-2 rounded-full transition-all", fillClassName)} style={{ width: `${clamped}%` }} />
     </div>
   );
@@ -105,28 +107,29 @@ function ProgressBar({ value, className = "", fillClassName = "bg-slate-900" }) 
 
 function MetricCard({ title, value, sub, icon: Icon, tone = "blue", trend }) {
   const toneMap = {
-    blue: "from-blue-50 to-blue-100/40 text-blue-700 border-blue-200",
-    green: "from-emerald-50 to-emerald-100/40 text-emerald-700 border-emerald-200",
-    amber: "from-amber-50 to-amber-100/40 text-amber-700 border-amber-200",
-    purple: "from-violet-50 to-violet-100/40 text-violet-700 border-violet-200",
-    red: "from-rose-50 to-rose-100/40 text-rose-700 border-rose-200",
+    blue: "from-blue-500/10 to-blue-400/5 text-blue-300 border-blue-500/20",
+    green: "from-emerald-500/10 to-emerald-400/5 text-emerald-300 border-emerald-500/20",
+    amber: "from-amber-500/10 to-amber-400/5 text-amber-300 border-amber-500/20",
+    purple: "from-violet-500/10 to-violet-400/5 text-violet-300 border-violet-500/20",
+    red: "from-rose-500/10 to-rose-400/5 text-rose-300 border-rose-500/20",
   };
+
   return (
     <motion.div layout initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
       <Card className="overflow-hidden">
         <div className="p-4">
           <div className="flex items-start justify-between gap-3">
             <div className="min-w-0">
-              <div className="text-xs font-medium text-slate-500">{title}</div>
+              <div className="text-xs font-medium text-slate-400">{title}</div>
               <div className="mt-2 flex flex-wrap items-end gap-2">
-                <div className="text-2xl font-bold tracking-tight text-slate-900">{value}</div>
+                <div className="text-2xl font-bold tracking-tight text-slate-100">{value}</div>
                 {trend ? (
                   <span
                     className={cn(
                       "mb-1 inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-medium",
                       trend.direction === "up"
-                        ? "border-emerald-200 bg-emerald-50 text-emerald-700"
-                        : "border-rose-200 bg-rose-50 text-rose-700"
+                        ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-300"
+                        : "border-rose-500/30 bg-rose-500/10 text-rose-300"
                     )}
                   >
                     {trend.direction === "up" ? (
@@ -150,41 +153,19 @@ function MetricCard({ title, value, sub, icon: Icon, tone = "blue", trend }) {
   );
 }
 
-function Segmented({ options, value, onChange }) {
+function SectionIntro({ title, description, icon: Icon }) {
   return (
-    <div className="inline-flex rounded-xl border border-slate-200 bg-white p-1 shadow-sm">
-      {options.map((opt) => (
-        <button
-          key={opt.value}
-          onClick={() => onChange(opt.value)}
-          className={cn(
-            "rounded-lg px-3 py-1.5 text-sm transition",
-            value === opt.value ? "bg-slate-900 text-white" : "text-slate-600 hover:bg-slate-100"
-          )}
-        >
-          {opt.label}
-        </button>
-      ))}
-    </div>
-  );
-}
-
-function SelectField({ label, value, onChange, options }) {
-  return (
-    <label className="flex min-w-[220px] flex-col gap-1">
-      <span className="text-xs font-medium text-slate-500">{label}</span>
-      <select
-        className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm shadow-sm focus:border-slate-400 focus:outline-none"
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-      >
-        {options.map((o) => (
-          <option key={o.value} value={o.value}>
-            {o.label}
-          </option>
-        ))}
-      </select>
-    </label>
+    <Card className="border-slate-700 bg-slate-900">
+      <div className="flex items-start gap-3 p-4">
+        <div className="rounded-xl border border-slate-700 bg-slate-800 p-2">
+          <Icon className="h-4 w-4 text-slate-200" />
+        </div>
+        <div>
+          <div className="text-sm font-semibold text-slate-100">{title}</div>
+          <div className="mt-1 text-sm text-slate-400">{description}</div>
+        </div>
+      </div>
+    </Card>
   );
 }
 
@@ -193,8 +174,10 @@ function TabButton({ active, onClick, label, icon: Icon }) {
     <button
       onClick={onClick}
       className={cn(
-        "flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium transition",
-        active ? "bg-slate-900 text-white shadow" : "text-slate-600 hover:bg-white"
+        "flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition",
+        active
+          ? "border border-slate-700 bg-slate-800 text-white shadow"
+          : "border border-transparent text-slate-400 hover:border-slate-800 hover:bg-slate-900 hover:text-slate-200"
       )}
     >
       <Icon className="h-4 w-4" />
@@ -203,362 +186,230 @@ function TabButton({ active, onClick, label, icon: Icon }) {
   );
 }
 
-const centres = [
-  {
-    id: "northview",
-    name: "Northview Community Centre",
-    city: "London, ON",
-    audience: "Adults 20–40",
-    municipalOwner: "City of London",
-    monthlyMRRDemo: 4200,
-    participants: [
-      {
-        id: "P-1001",
-        name: "Alex P.",
-        phone: "(519) 555-0121",
-        stage: "At Risk",
-        risk: "High",
-        program: "Mobility + Strength",
-        cohortId: "NV-MOB-01",
-        nextSession: "Tue 6:00 PM",
-        attendanceRate: 63,
-        retentionProbability: 54,
-        subsidyType: "Sliding Scale",
-        balance: 0,
-        lastTouch: "Missed-session SMS • 1 day ago",
-        owner: "Samir K.",
-        tags: ["Schedule conflict", "Needs re-entry"],
-        timeline: [
-          { date: "Feb 12", type: "Enrollment", note: "Registered for Mobility + Strength" },
-          { date: "Feb 15", type: "Attendance", note: "Attended Week 1" },
-          { date: "Feb 22", type: "No-show", note: "Missed Week 2" },
-          { date: "Feb 22", type: "Automation", note: "Missed-session SMS triggered" },
-          { date: "Feb 23", type: "Reply", note: "Asked about alternate slot" },
-        ],
-        tasks: [
-          { id: "t1", title: "Offer Thursday swap", due: "Today", priority: "High", done: false },
-          { id: "t2", title: "Confirm transportation barrier", due: "Tomorrow", priority: "Medium", done: false },
-        ],
-      },
-      {
-        id: "P-1002",
-        name: "Maya R.",
-        phone: "(519) 555-0147",
-        stage: "Active",
-        risk: "Low",
-        program: "Walk + Conditioning",
-        cohortId: "NV-WALK-02",
-        nextSession: "Thu 7:00 PM",
-        attendanceRate: 86,
-        retentionProbability: 83,
-        subsidyType: "Voucher",
-        balance: -20,
-        lastTouch: "Milestone reward sent • 2 days ago",
-        owner: "Leila M.",
-        tags: ["New parent", "Cost-sensitive"],
-        timeline: [
-          { date: "Feb 05", type: "Voucher", note: "Voucher redeemed online" },
-          { date: "Feb 06", type: "Enrollment", note: "Placed in cohort NV-WALK-02" },
-          { date: "Feb 20", type: "Milestone", note: "Reached Week 4" },
-          { date: "Feb 21", type: "Reward", note: "Commitment rebate credit issued" },
-        ],
-        tasks: [{ id: "t3", title: "Prompt re-enrollment at Week 6", due: "Next week", priority: "Low", done: false }],
-      },
-      {
-        id: "P-1003",
-        name: "Chris T.",
-        phone: "(519) 555-0168",
-        stage: "Re-enrolled",
-        risk: "Low",
-        program: "Core + Cardio Reset",
-        cohortId: "NV-CORE-03",
-        nextSession: "Sat 10:30 AM",
-        attendanceRate: 79,
-        retentionProbability: 88,
-        subsidyType: "Standard",
-        balance: 0,
-        lastTouch: "Re-enrollment confirmation • 4 days ago",
-        owner: "Devon P.",
-        tags: ["Desk job", "Routine builder"],
-        timeline: [
-          { date: "Jan 10", type: "Enrollment", note: "Joined previous cohort" },
-          { date: "Feb 01", type: "Completion", note: "Completed 8-week cycle" },
-          { date: "Feb 03", type: "Re-enroll", note: "Booked next cohort" },
-        ],
-        tasks: [],
-      },
-      {
-        id: "P-1004",
-        name: "Jordan S.",
-        phone: "(519) 555-0192",
-        stage: "Trial Booked",
-        risk: "Medium",
-        program: "Strength Foundations",
-        cohortId: "NV-TRIAL-01",
-        nextSession: "Mon 7:30 PM",
-        attendanceRate: 0,
-        retentionProbability: 41,
-        subsidyType: "Sliding Scale",
-        balance: 0,
-        lastTouch: "Trial reminder pending • 12h",
-        owner: "Front Desk",
-        tags: ["Commuter", "Evening only"],
-        timeline: [
-          { date: "Feb 22", type: "Lead", note: "Came from QR poster / gym noticeboard" },
-          { date: "Feb 23", type: "Call", note: "Booked trial for Monday" },
-        ],
-        tasks: [{ id: "t4", title: "Send 24h reminder", due: "Today", priority: "High", done: false }],
-      },
-      {
-        id: "P-1005",
-        name: "Nina K.",
-        phone: "(519) 555-0105",
-        stage: "Active",
-        risk: "Medium",
-        program: "Mobility Reset After Work",
-        cohortId: "NV-FLEX-02",
-        nextSession: "Wed 6:30 PM",
-        attendanceRate: 71,
-        retentionProbability: 65,
-        subsidyType: "Standard",
-        balance: 0,
-        lastTouch: "Coach check-in • 3 days ago",
-        owner: "Noah L.",
-        tags: ["Returning after injury"],
-        timeline: [
-          { date: "Feb 08", type: "Enrollment", note: "Joined mobility cohort" },
-          { date: "Feb 12", type: "Coach note", note: "Asked for lower-intensity modification" },
-          { date: "Feb 19", type: "Attendance", note: "Hit 3-week streak" },
-        ],
-        tasks: [{ id: "t5", title: "Offer milestone reward preview", due: "This week", priority: "Medium", done: false }],
-      },
-      {
-        id: "P-1006",
-        name: "Owen B.",
-        phone: "(519) 555-0174",
-        stage: "At Risk",
-        risk: "High",
-        program: "Weekend Walking Cohort",
-        cohortId: "NV-WALK-03",
-        nextSession: "Sat 9:00 AM",
-        attendanceRate: 58,
-        retentionProbability: 49,
-        subsidyType: "Voucher",
-        balance: 0,
-        lastTouch: "No response to reminder • 2 days ago",
-        owner: "Farah A.",
-        tags: ["Busy parent", "Missed W2"],
-        timeline: [
-          { date: "Feb 10", type: "Enrollment", note: "Weekend cohort confirmed" },
-          { date: "Feb 17", type: "No-show", note: "Missed Week 2" },
-          { date: "Feb 17", type: "Automation", note: "Missed-session re-entry SMS" },
-          { date: "Feb 20", type: "No reply", note: "Still pending" },
-        ],
-        tasks: [{ id: "t6", title: "Manual call if no reply by tonight", due: "Today", priority: "High", done: false }],
-      },
-      {
-        id: "P-1007",
-        name: "Leah M.",
-        phone: "(519) 555-0116",
-        stage: "Lead",
-        risk: "Low",
-        program: "General intake",
-        cohortId: "INTAKE",
-        nextSession: "Needs scheduling",
-        attendanceRate: 0,
-        retentionProbability: 32,
-        subsidyType: "Unknown",
-        balance: 0,
-        lastTouch: "Web inquiry • 6h ago",
-        owner: "Intake Queue",
-        tags: ["Price questions"],
-        timeline: [{ date: "Today", type: "Lead", note: "Website form: interested in beginner program" }],
-        tasks: [{ id: "t7", title: "Call lead + explain sliding-scale options", due: "Today", priority: "High", done: false }],
-      },
-      {
-        id: "P-1008",
-        name: "David H.",
-        phone: "(519) 555-0139",
-        stage: "Completed",
-        risk: "Low",
-        program: "Mobility + Strength",
-        cohortId: "NV-MOB-01",
-        nextSession: "Re-enrollment invite pending",
-        attendanceRate: 81,
-        retentionProbability: 76,
-        subsidyType: "Standard",
-        balance: 0,
-        lastTouch: "Completion certificate sent • 1 day ago",
-        owner: "Samir K.",
-        tags: ["Good candidate for re-enroll"],
-        timeline: [
-          { date: "Jan 05", type: "Enrollment", note: "Joined cohort" },
-          { date: "Feb 22", type: "Completion", note: "Completed 8-week cycle" },
-        ],
-        tasks: [{ id: "t8", title: "Send re-enrollment offer", due: "Tomorrow", priority: "Medium", done: false }],
-      },
-    ],
-    programs: [
-      { id: "NV-MOB-01", title: "Mobility + Strength", capacity: 12, enrolled: 12, waitlist: 5, coach: "Samir K.", attendance: 78, retention: 67 },
-      { id: "NV-WALK-02", title: "Walk + Conditioning", capacity: 15, enrolled: 14, waitlist: 2, coach: "Leila M.", attendance: 72, retention: 61 },
-      { id: "NV-CORE-03", title: "Core + Cardio Reset", capacity: 10, enrolled: 8, waitlist: 0, coach: "Devon P.", attendance: 69, retention: 56 },
-    ],
-    commsByWeek: [
-      { week: "W1", reminders: 78, replies: 22, rescues: 6 },
-      { week: "W2", reminders: 84, replies: 25, rescues: 9 },
-      { week: "W3", reminders: 91, replies: 31, rescues: 11 },
-      { week: "W4", reminders: 97, replies: 34, rescues: 12 },
-      { week: "W5", reminders: 102, replies: 36, rescues: 14 },
-      { week: "W6", reminders: 108, replies: 39, rescues: 16 },
-    ],
-    retentionTrend: [
-      { month: "Sep", retention: 42, reEnroll: 19 },
-      { month: "Oct", retention: 47, reEnroll: 22 },
-      { month: "Nov", retention: 52, reEnroll: 27 },
-      { month: "Dec", retention: 56, reEnroll: 31 },
-      { month: "Jan", retention: 60, reEnroll: 35 },
-      { month: "Feb", retention: 63, reEnroll: 39 },
-    ],
-  },
-  {
-    id: "riverside",
-    name: "Riverside Recreation Hub",
-    city: "Kitchener, ON",
-    audience: "Adults 20–40",
-    municipalOwner: "City of Kitchener",
-    monthlyMRRDemo: 3600,
-    participants: [
-      {
-        id: "P-2001",
-        name: "Emma J.",
-        phone: "(226) 555-0151",
-        stage: "Active",
-        risk: "Low",
-        program: "Strength Foundations",
-        cohortId: "RV-STR-01",
-        nextSession: "Mon 7:30 PM",
-        attendanceRate: 84,
-        retentionProbability: 82,
-        subsidyType: "Standard",
-        balance: 0,
-        lastTouch: "Reminder confirmed • 1 day ago",
-        owner: "Priya S.",
-        tags: ["Consistent"],
-        timeline: [{ date: "Feb 01", type: "Enrollment", note: "Strength Foundations" }],
-        tasks: [],
-      },
-      {
-        id: "P-2002",
-        name: "Isaac L.",
-        phone: "(226) 555-0119",
-        stage: "At Risk",
-        risk: "High",
-        program: "Mobility Reset After Work",
-        cohortId: "RV-FLEX-02",
-        nextSession: "Wed 6:30 PM",
-        attendanceRate: 52,
-        retentionProbability: 46,
-        subsidyType: "Sliding Scale",
-        balance: 0,
-        lastTouch: "Missed session • yesterday",
-        owner: "Noah L.",
-        tags: ["Night shift", "Needs alternative slot"],
-        timeline: [{ date: "Yesterday", type: "No-show", note: "Missed session, no reply yet" }],
-        tasks: [{ id: "rt1", title: "Offer Saturday option", due: "Today", priority: "High", done: false }],
-      },
-      {
-        id: "P-2003",
-        name: "Sara B.",
-        phone: "(226) 555-0171",
-        stage: "Completed",
-        risk: "Low",
-        program: "Weekend Walking Cohort",
-        cohortId: "RV-WALK-03",
-        nextSession: "Re-enrollment invite pending",
-        attendanceRate: 77,
-        retentionProbability: 72,
-        subsidyType: "Voucher",
-        balance: 0,
-        lastTouch: "Completion SMS • 3 days ago",
-        owner: "Farah A.",
-        tags: ["Potential referral"],
-        timeline: [{ date: "Feb 20", type: "Completion", note: "Completed 8-week cycle" }],
-        tasks: [{ id: "rt2", title: "Send referral incentive", due: "Tomorrow", priority: "Low", done: false }],
-      },
-      {
-        id: "P-2004",
-        name: "Noel W.",
-        phone: "(226) 555-0165",
-        stage: "Lead",
-        risk: "Low",
-        program: "General intake",
-        cohortId: "INTAKE",
-        nextSession: "Needs call",
-        attendanceRate: 0,
-        retentionProbability: 29,
-        subsidyType: "Unknown",
-        balance: 0,
-        lastTouch: "Instagram inquiry • 4h ago",
-        owner: "Intake Queue",
-        tags: ["Asks about cost"],
-        timeline: [{ date: "Today", type: "Lead", note: "IG DM interested in beginner classes" }],
-        tasks: [{ id: "rt3", title: "Call lead before evening", due: "Today", priority: "High", done: false }],
-      },
-      {
-        id: "P-2005",
-        name: "Priya D.",
-        phone: "(226) 555-0102",
-        stage: "Re-enrolled",
-        risk: "Low",
-        program: "Strength Foundations",
-        cohortId: "RV-STR-01",
-        nextSession: "Mon 7:30 PM",
-        attendanceRate: 88,
-        retentionProbability: 90,
-        subsidyType: "Standard",
-        balance: -15,
-        lastTouch: "Re-enrollment confirmed • 2 days ago",
-        owner: "Priya S.",
-        tags: ["Advocate"],
-        timeline: [{ date: "Feb 22", type: "Re-enroll", note: "Joined next cycle immediately" }],
-        tasks: [],
-      },
-    ],
-    programs: [
-      { id: "RV-STR-01", title: "Strength Foundations", capacity: 14, enrolled: 13, waitlist: 3, coach: "Priya S.", attendance: 74, retention: 59 },
-      { id: "RV-FLEX-02", title: "Mobility Reset After Work", capacity: 12, enrolled: 10, waitlist: 0, coach: "Noah L.", attendance: 70, retention: 54 },
-      { id: "RV-WALK-03", title: "Weekend Walking Cohort", capacity: 18, enrolled: 17, waitlist: 4, coach: "Farah A.", attendance: 77, retention: 62 },
-    ],
-    commsByWeek: [
-      { week: "W1", reminders: 65, replies: 19, rescues: 5 },
-      { week: "W2", reminders: 72, replies: 21, rescues: 6 },
-      { week: "W3", reminders: 78, replies: 23, rescues: 7 },
-      { week: "W4", reminders: 80, replies: 25, rescues: 9 },
-      { week: "W5", reminders: 86, replies: 28, rescues: 10 },
-      { week: "W6", reminders: 92, replies: 30, rescues: 11 },
-    ],
-    retentionTrend: [
-      { month: "Sep", retention: 38, reEnroll: 18 },
-      { month: "Oct", retention: 43, reEnroll: 21 },
-      { month: "Nov", retention: 48, reEnroll: 24 },
-      { month: "Dec", retention: 52, reEnroll: 28 },
-      { month: "Jan", retention: 55, reEnroll: 31 },
-      { month: "Feb", retention: 58, reEnroll: 34 },
-    ],
-  },
-];
+const centre = {
+  id: "northview",
+  name: "Northview Community Centre",
+  city: "London, ON",
+  audience: "Adults 20–40",
+  municipalOwner: "City of London",
+  monthlyMRRDemo: 4200,
+  participants: [
+    {
+      id: "P-1001",
+      name: "Alex P.",
+      phone: "(519) 555-0121",
+      stage: "At Risk",
+      risk: "High",
+      program: "Mobility + Strength",
+      cohortId: "NV-MOB-01",
+      nextSession: "Tue 6:00 PM",
+      attendanceRate: 63,
+      retentionProbability: 54,
+      subsidyType: "Sliding Scale",
+      balance: 0,
+      lastTouch: "Missed-session SMS • 1 day ago",
+      owner: "Samir K.",
+      tags: ["Schedule conflict", "Needs re-entry"],
+      timeline: [
+        { date: "Feb 12", type: "Enrollment", note: "Registered for Mobility + Strength" },
+        { date: "Feb 15", type: "Attendance", note: "Attended Week 1" },
+        { date: "Feb 22", type: "No-show", note: "Missed Week 2" },
+        { date: "Feb 22", type: "Automation", note: "Missed-session SMS triggered" },
+        { date: "Feb 23", type: "Reply", note: "Asked about alternate slot" },
+      ],
+      tasks: [
+        { id: "t1", title: "Offer Thursday swap", due: "Today", priority: "High", done: false },
+        { id: "t2", title: "Confirm transportation barrier", due: "Tomorrow", priority: "Medium", done: false },
+      ],
+    },
+    {
+      id: "P-1002",
+      name: "Maya R.",
+      phone: "(519) 555-0147",
+      stage: "Active",
+      risk: "Low",
+      program: "Walk + Conditioning",
+      cohortId: "NV-WALK-02",
+      nextSession: "Thu 7:00 PM",
+      attendanceRate: 86,
+      retentionProbability: 83,
+      subsidyType: "Voucher",
+      balance: -20,
+      lastTouch: "Milestone reward sent • 2 days ago",
+      owner: "Leila M.",
+      tags: ["New parent", "Cost-sensitive"],
+      timeline: [
+        { date: "Feb 05", type: "Voucher", note: "Voucher redeemed online" },
+        { date: "Feb 06", type: "Enrollment", note: "Placed in cohort NV-WALK-02" },
+        { date: "Feb 20", type: "Milestone", note: "Reached Week 4" },
+        { date: "Feb 21", type: "Reward", note: "Commitment rebate credit issued" },
+      ],
+      tasks: [{ id: "t3", title: "Prompt re-enrollment at Week 6", due: "Next week", priority: "Low", done: false }],
+    },
+    {
+      id: "P-1003",
+      name: "Chris T.",
+      phone: "(519) 555-0168",
+      stage: "Re-enrolled",
+      risk: "Low",
+      program: "Core + Cardio Reset",
+      cohortId: "NV-CORE-03",
+      nextSession: "Sat 10:30 AM",
+      attendanceRate: 79,
+      retentionProbability: 88,
+      subsidyType: "Standard",
+      balance: 0,
+      lastTouch: "Re-enrollment confirmation • 4 days ago",
+      owner: "Devon P.",
+      tags: ["Desk job", "Routine builder"],
+      timeline: [
+        { date: "Jan 10", type: "Enrollment", note: "Joined previous cohort" },
+        { date: "Feb 01", type: "Completion", note: "Completed 8-week cycle" },
+        { date: "Feb 03", type: "Re-enroll", note: "Booked next cohort" },
+      ],
+      tasks: [],
+    },
+    {
+      id: "P-1004",
+      name: "Jordan S.",
+      phone: "(519) 555-0192",
+      stage: "Trial Booked",
+      risk: "Medium",
+      program: "Strength Foundations",
+      cohortId: "NV-TRIAL-01",
+      nextSession: "Mon 7:30 PM",
+      attendanceRate: 0,
+      retentionProbability: 41,
+      subsidyType: "Sliding Scale",
+      balance: 0,
+      lastTouch: "Trial reminder pending • 12h",
+      owner: "Front Desk",
+      tags: ["Commuter", "Evening only"],
+      timeline: [
+        { date: "Feb 22", type: "Lead", note: "Came from QR poster / gym noticeboard" },
+        { date: "Feb 23", type: "Call", note: "Booked trial for Monday" },
+      ],
+      tasks: [{ id: "t4", title: "Send 24h reminder", due: "Today", priority: "High", done: false }],
+    },
+    {
+      id: "P-1005",
+      name: "Nina K.",
+      phone: "(519) 555-0105",
+      stage: "Active",
+      risk: "Medium",
+      program: "Mobility Reset After Work",
+      cohortId: "NV-FLEX-02",
+      nextSession: "Wed 6:30 PM",
+      attendanceRate: 71,
+      retentionProbability: 65,
+      subsidyType: "Standard",
+      balance: 0,
+      lastTouch: "Coach check-in • 3 days ago",
+      owner: "Noah L.",
+      tags: ["Returning after injury"],
+      timeline: [
+        { date: "Feb 08", type: "Enrollment", note: "Joined mobility cohort" },
+        { date: "Feb 12", type: "Coach note", note: "Asked for lower-intensity modification" },
+        { date: "Feb 19", type: "Attendance", note: "Hit 3-week streak" },
+      ],
+      tasks: [{ id: "t5", title: "Offer milestone reward preview", due: "This week", priority: "Medium", done: false }],
+    },
+    {
+      id: "P-1006",
+      name: "Owen B.",
+      phone: "(519) 555-0174",
+      stage: "At Risk",
+      risk: "High",
+      program: "Weekend Walking Cohort",
+      cohortId: "NV-WALK-03",
+      nextSession: "Sat 9:00 AM",
+      attendanceRate: 58,
+      retentionProbability: 49,
+      subsidyType: "Voucher",
+      balance: 0,
+      lastTouch: "No response to reminder • 2 days ago",
+      owner: "Farah A.",
+      tags: ["Busy parent", "Missed W2"],
+      timeline: [
+        { date: "Feb 10", type: "Enrollment", note: "Weekend cohort confirmed" },
+        { date: "Feb 17", type: "No-show", note: "Missed Week 2" },
+        { date: "Feb 17", type: "Automation", note: "Missed-session re-entry SMS" },
+        { date: "Feb 20", type: "No reply", note: "Still pending" },
+      ],
+      tasks: [{ id: "t6", title: "Manual call if no reply by tonight", due: "Today", priority: "High", done: false }],
+    },
+    {
+      id: "P-1007",
+      name: "Leah M.",
+      phone: "(519) 555-0116",
+      stage: "Lead",
+      risk: "Low",
+      program: "General intake",
+      cohortId: "INTAKE",
+      nextSession: "Needs scheduling",
+      attendanceRate: 0,
+      retentionProbability: 32,
+      subsidyType: "Unknown",
+      balance: 0,
+      lastTouch: "Web inquiry • 6h ago",
+      owner: "Intake Queue",
+      tags: ["Price questions"],
+      timeline: [{ date: "Today", type: "Lead", note: "Website form: interested in beginner program" }],
+      tasks: [{ id: "t7", title: "Call lead + explain sliding-scale options", due: "Today", priority: "High", done: false }],
+    },
+    {
+      id: "P-1008",
+      name: "David H.",
+      phone: "(519) 555-0139",
+      stage: "Completed",
+      risk: "Low",
+      program: "Mobility + Strength",
+      cohortId: "NV-MOB-01",
+      nextSession: "Re-enrollment invite pending",
+      attendanceRate: 81,
+      retentionProbability: 76,
+      subsidyType: "Standard",
+      balance: 0,
+      lastTouch: "Completion certificate sent • 1 day ago",
+      owner: "Samir K.",
+      tags: ["Good candidate for re-enroll"],
+      timeline: [
+        { date: "Jan 05", type: "Enrollment", note: "Joined cohort" },
+        { date: "Feb 22", type: "Completion", note: "Completed 8-week cycle" },
+      ],
+      tasks: [{ id: "t8", title: "Send re-enrollment offer", due: "Tomorrow", priority: "Medium", done: false }],
+    },
+  ],
+  programs: [
+    { id: "NV-MOB-01", title: "Mobility + Strength", capacity: 12, enrolled: 12, waitlist: 5, coach: "Samir K.", attendance: 78, retention: 67 },
+    { id: "NV-WALK-02", title: "Walk + Conditioning", capacity: 15, enrolled: 14, waitlist: 2, coach: "Leila M.", attendance: 72, retention: 61 },
+    { id: "NV-CORE-03", title: "Core + Cardio Reset", capacity: 10, enrolled: 8, waitlist: 0, coach: "Devon P.", attendance: 69, retention: 56 },
+  ],
+  commsByWeek: [
+    { week: "W1", reminders: 78, replies: 22, rescues: 6 },
+    { week: "W2", reminders: 84, replies: 25, rescues: 9 },
+    { week: "W3", reminders: 91, replies: 31, rescues: 11 },
+    { week: "W4", reminders: 97, replies: 34, rescues: 12 },
+    { week: "W5", reminders: 102, replies: 36, rescues: 14 },
+    { week: "W6", reminders: 108, replies: 39, rescues: 16 },
+  ],
+  retentionTrend: [
+    { month: "Sep", retention: 42, reEnroll: 19 },
+    { month: "Oct", retention: 47, reEnroll: 22 },
+    { month: "Nov", retention: 52, reEnroll: 27 },
+    { month: "Dec", retention: 56, reEnroll: 31 },
+    { month: "Jan", retention: 60, reEnroll: 35 },
+    { month: "Feb", retention: 63, reEnroll: 39 },
+  ],
+};
 
 const tabs = [
-  { id: "overview", label: "CRM Overview", icon: Home },
+  { id: "overview", label: "Overview", icon: Home },
   { id: "pipeline", label: "Pipeline", icon: KanbanSquare },
   { id: "participants", label: "Participants", icon: Users },
   { id: "comms", label: "Comms", icon: MessageSquare },
   { id: "programs", label: "Programs", icon: Calendar },
 ];
-
-function useCentreData(selectedCentreId) {
-  return useMemo(() => centres.find((c) => c.id === selectedCentreId) || centres[0], [selectedCentreId]);
-}
 
 function getStageTone(stage) {
   if (stage === "At Risk") return "red";
@@ -591,6 +442,7 @@ function buildCrmMetrics(data) {
 
 function OverviewTab({ data, onSelectParticipant }) {
   const metrics = buildCrmMetrics(data);
+
   const atRiskQueue = data.participants
     .filter((p) => p.stage === "At Risk")
     .sort((a, b) => (a.retentionProbability ?? 0) - (b.retentionProbability ?? 0))
@@ -599,100 +451,119 @@ function OverviewTab({ data, onSelectParticipant }) {
   const upcomingTasks = data.participants
     .flatMap((p) => (p.tasks || []).map((t) => ({ ...t, participantName: p.name, participantId: p.id })))
     .filter((t) => !t.done)
-    .slice(0, 6);
+    .slice(0, 5);
 
   const pieData = [
-    { name: "Lead / Trial", value: data.participants.filter((p) => ["Lead", "Trial Booked"].includes(p.stage)).length },
+    { name: "Lead/Trial", value: data.participants.filter((p) => ["Lead", "Trial Booked"].includes(p.stage)).length },
     { name: "Active", value: data.participants.filter((p) => p.stage === "Active").length },
     { name: "At Risk", value: data.participants.filter((p) => p.stage === "At Risk").length },
-    { name: "Completed / Re-enrolled", value: data.participants.filter((p) => ["Completed", "Re-enrolled"].includes(p.stage)).length },
+    {
+      name: "Completed/Renewed",
+      value: data.participants.filter((p) => ["Completed", "Re-enrolled"].includes(p.stage)).length,
+    },
   ];
 
   return (
     <div className="space-y-5">
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <SectionIntro
+        icon={Home}
+        title="What this page shows"
+        description="A simple operating view: who is active, who may drop off, what staff need to do next, and whether retention is improving over time."
+      />
+
+      <div className="grid grid-cols-1 gap-4 xl:grid-cols-3">
         <MetricCard
           title="Active Participants"
           value={`${metrics.active}`}
-          sub={`${data.audience} • current cohorts`}
+          sub="Currently attending cohorts"
           icon={Users}
           tone="blue"
-          trend={{ direction: "up", label: "+8% vs last cycle" }}
+          trend={{ direction: "up", label: "+8% cycle" }}
         />
         <MetricCard
-          title="At-Risk Queue"
+          title="Needs Attention"
           value={`${metrics.atRisk}`}
-          sub="Needs intervention this week"
+          sub="At-risk participants this week"
           icon={AlertTriangle}
           tone="red"
-          trend={metrics.atRisk > 2 ? { direction: "down", label: "watchlist" } : undefined}
         />
         <MetricCard
           title="Open Leads / Trials"
           value={`${metrics.leads}`}
-          sub="Intake pipeline to convert"
+          sub="People to convert into active participants"
           icon={Target}
           tone="purple"
         />
-        <MetricCard
-          title="Avg Attendance"
-          value={formatPct(metrics.avgAttendance)}
-          sub="Across participants with attendance history"
-          icon={Activity}
-          tone="green"
-        />
       </div>
 
-      <div className="grid grid-cols-1 gap-5 xl:grid-cols-3">
-        <Card className="xl:col-span-2">
+      <div className="grid grid-cols-1 gap-5 xl:grid-cols-[1.35fr_0.65fr]">
+        <Card>
           <CardHeader
-            title="Retention + Re-enrollment Trend"
-            subtitle="CRM-style outcome tracking for grant reports and municipal contracts"
+            title="Retention Trend"
+            subtitle="Simple outcome signal judges can understand quickly"
             right={<Badge tone="blue">{data.municipalOwner}</Badge>}
           />
-          <div className="h-80 px-2 py-3">
+          <div className="h-72 px-2 py-3">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={data.retentionTrend} margin={{ top: 10, right: 16, left: 4, bottom: 0 }}>
                 <defs>
                   <linearGradient id="retFillA" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#0f172a" stopOpacity={0.2} />
-                    <stop offset="95%" stopColor="#0f172a" stopOpacity={0.03} />
+                    <stop offset="5%" stopColor="#60a5fa" stopOpacity={0.25} />
+                    <stop offset="95%" stopColor="#60a5fa" stopOpacity={0.03} />
                   </linearGradient>
                   <linearGradient id="reFillA" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#2563eb" stopOpacity={0.22} />
-                    <stop offset="95%" stopColor="#2563eb" stopOpacity={0.03} />
+                    <stop offset="5%" stopColor="#34d399" stopOpacity={0.2} />
+                    <stop offset="95%" stopColor="#34d399" stopOpacity={0.03} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                <XAxis dataKey="month" tick={{ fontSize: 12, fill: "#64748b" }} axisLine={false} tickLine={false} />
-                <YAxis domain={[0, 100]} tick={{ fontSize: 12, fill: "#64748b" }} axisLine={false} tickLine={false} />
-                <Tooltip contentStyle={{ borderRadius: 12, border: "1px solid #e2e8f0" }} />
-                <Legend />
-                <Area type="monotone" dataKey="retention" name="Retention %" stroke="#0f172a" strokeWidth={2.5} fill="url(#retFillA)" />
-                <Area type="monotone" dataKey="reEnroll" name="Re-enrollment %" stroke="#2563eb" strokeWidth={2.5} fill="url(#reFillA)" />
+                <CartesianGrid strokeDasharray="3 3" stroke="#1f2937" />
+                <XAxis dataKey="month" tick={{ fontSize: 12, fill: "#94a3b8" }} axisLine={false} tickLine={false} />
+                <YAxis domain={[0, 100]} tick={{ fontSize: 12, fill: "#94a3b8" }} axisLine={false} tickLine={false} />
+                <Tooltip
+                  contentStyle={{ borderRadius: 12, border: "1px solid #334155", background: "#0f172a", color: "#e2e8f0" }}
+                  labelStyle={{ color: "#e2e8f0" }}
+                />
+                <Legend wrapperStyle={{ color: "#cbd5e1" }} />
+                <Area type="monotone" dataKey="retention" name="Retention %" stroke="#60a5fa" strokeWidth={2.5} fill="url(#retFillA)" />
+                <Area type="monotone" dataKey="reEnroll" name="Re-enrollment %" stroke="#34d399" strokeWidth={2.5} fill="url(#reFillA)" />
               </AreaChart>
             </ResponsiveContainer>
           </div>
         </Card>
 
         <Card>
-          <CardHeader title="Pipeline Snapshot" subtitle="What a CRM should answer at a glance" />
+          <CardHeader title="Pipeline Snapshot" subtitle="High-level funnel mix" />
           <div className="space-y-3 p-4">
+            <div className="h-44 rounded-xl border border-slate-800 bg-slate-950/50 p-2">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie data={pieData} dataKey="value" nameKey="name" outerRadius={58} innerRadius={35} paddingAngle={3}>
+                    {pieData.map((entry, idx) => (
+                      <Cell key={entry.name} fill={COLORS[idx % COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip
+                    contentStyle={{ borderRadius: 12, border: "1px solid #334155", background: "#0f172a", color: "#e2e8f0" }}
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+
             {pieData.map((p, i) => (
-              <div key={p.name} className="rounded-xl border border-slate-200 p-3">
+              <div key={p.name} className="rounded-xl border border-slate-800 p-3">
                 <div className="mb-2 flex items-center justify-between text-sm">
-                  <span className="font-medium text-slate-800">{p.name}</span>
-                  <span className="text-slate-900">{p.value}</span>
+                  <span className="font-medium text-slate-300">{p.name}</span>
+                  <span className="text-slate-100">{p.value}</span>
                 </div>
-                <ProgressBar value={(p.value / Math.max(data.participants.length, 1)) * 100} fillClassName={i % 2 ? "bg-blue-600" : "bg-slate-900"} />
+                <ProgressBar
+                  value={(p.value / Math.max(data.participants.length, 1)) * 100}
+                  fillClassName={i % 2 ? "bg-blue-400" : "bg-slate-200"}
+                />
               </div>
             ))}
 
-            <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-900">
-              <div className="font-semibold">Judge angle</div>
-              <div className="mt-1">
-                This is no longer just an analytics dashboard — it behaves like an operating CRM for leads, participants, interventions, and renewals.
-              </div>
+            <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-3 text-sm text-emerald-200">
+              This dashboard behaves like an operating CRM, not just a report: staff can identify people, take action, and track outcomes.
             </div>
           </div>
         </Card>
@@ -700,18 +571,18 @@ function OverviewTab({ data, onSelectParticipant }) {
 
       <div className="grid grid-cols-1 gap-5 xl:grid-cols-2">
         <Card>
-          <CardHeader title="At-Risk Queue" subtitle="Prioritized people who may drop without intervention" />
+          <CardHeader title="Who needs attention" subtitle="People most likely to drop without intervention" />
           <div className="space-y-3 p-4">
             {atRiskQueue.map((p) => (
               <button
                 key={p.id}
                 onClick={() => onSelectParticipant(p.id)}
-                className="w-full rounded-xl border border-slate-200 p-3 text-left transition hover:bg-slate-50"
+                className="w-full rounded-xl border border-slate-800 bg-slate-950/40 p-3 text-left transition hover:border-slate-700 hover:bg-slate-950"
               >
                 <div className="flex items-start justify-between gap-2">
                   <div>
-                    <div className="text-sm font-semibold text-slate-900">{p.name}</div>
-                    <div className="mt-1 text-xs text-slate-500">
+                    <div className="text-sm font-semibold text-slate-100">{p.name}</div>
+                    <div className="mt-1 text-xs text-slate-400">
                       {p.program} • {p.nextSession}
                     </div>
                   </div>
@@ -723,40 +594,38 @@ function OverviewTab({ data, onSelectParticipant }) {
                 <div className="mt-3 grid grid-cols-3 gap-3 text-xs">
                   <div>
                     <div className="text-slate-500">Attendance</div>
-                    <div className="font-semibold text-slate-900">{p.attendanceRate}%</div>
+                    <div className="font-semibold text-slate-100">{p.attendanceRate}%</div>
                   </div>
                   <div>
-                    <div className="text-slate-500">Retention prob.</div>
-                    <div className="font-semibold text-slate-900">{p.retentionProbability}%</div>
+                    <div className="text-slate-500">Retention</div>
+                    <div className="font-semibold text-slate-100">{p.retentionProbability}%</div>
                   </div>
                   <div>
                     <div className="text-slate-500">Last touch</div>
-                    <div className="font-semibold text-slate-900">{p.lastTouch.split(" • ")[0]}</div>
+                    <div className="font-semibold text-slate-100">{p.lastTouch.split(" • ")[0]}</div>
                   </div>
                 </div>
               </button>
             ))}
-            {atRiskQueue.length === 0 && <div className="text-sm text-slate-500">No at-risk participants right now.</div>}
           </div>
         </Card>
 
         <Card>
-          <CardHeader title="Task Queue" subtitle="Operational work the CRM surfaces for staff" />
+          <CardHeader title="Staff task queue" subtitle="What the system surfaces for follow-up" />
           <div className="space-y-3 p-4">
             {upcomingTasks.map((t) => (
-              <div key={t.id} className="rounded-xl border border-slate-200 p-3">
+              <div key={t.id} className="rounded-xl border border-slate-800 bg-slate-950/40 p-3">
                 <div className="flex items-center justify-between gap-2">
-                  <div className="text-sm font-semibold text-slate-900">{t.title}</div>
+                  <div className="text-sm font-semibold text-slate-100">{t.title}</div>
                   <Badge tone={t.priority === "High" ? "red" : t.priority === "Medium" ? "amber" : "default"}>
                     {t.priority}
                   </Badge>
                 </div>
-                <div className="mt-1 text-xs text-slate-500">
+                <div className="mt-1 text-xs text-slate-400">
                   {t.participantName} • Due {t.due}
                 </div>
               </div>
             ))}
-            {upcomingTasks.length === 0 && <div className="text-sm text-slate-500">No pending tasks.</div>}
           </div>
         </Card>
       </div>
@@ -778,18 +647,24 @@ function PipelineTab({ data, onSelectParticipant }) {
 
   return (
     <div className="space-y-5">
+      <SectionIntro
+        icon={KanbanSquare}
+        title="What this page shows"
+        description="A simple lifecycle board from lead → trial → active → at-risk → completed → re-enrolled, so judges can see the journey clearly."
+      />
+
       <Card>
         <CardHeader
-          title="Participant Pipeline (CRM Board)"
-          subtitle="This is the heart of the CRM demo: acquisition → activation → retention → renewal"
+          title="Participant lifecycle board"
+          subtitle="Acquisition → activation → retention → renewal"
           right={<Badge tone="purple">{data.participants.length} records</Badge>}
         />
         <div className="overflow-x-auto p-4">
           <div className="grid min-w-[980px] grid-cols-6 gap-4">
             {stages.map((stage) => (
-              <div key={stage} className="rounded-2xl border border-slate-200 bg-slate-50 p-3">
+              <div key={stage} className="rounded-2xl border border-slate-800 bg-slate-950/40 p-3">
                 <div className="mb-3 flex items-center justify-between">
-                  <div className="text-sm font-semibold text-slate-900">{stage}</div>
+                  <div className="text-sm font-semibold text-slate-100">{stage}</div>
                   <Badge tone={getStageTone(stage)}>{grouped[stage]?.length || 0}</Badge>
                 </div>
                 <div className="space-y-3">
@@ -797,12 +672,12 @@ function PipelineTab({ data, onSelectParticipant }) {
                     <button
                       key={p.id}
                       onClick={() => onSelectParticipant(p.id)}
-                      className="w-full rounded-xl border border-slate-200 bg-white p-3 text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow"
+                      className="w-full rounded-xl border border-slate-800 bg-slate-900 p-3 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-slate-700"
                     >
                       <div className="flex items-start justify-between gap-2">
                         <div className="min-w-0">
-                          <div className="truncate text-sm font-semibold text-slate-900">{p.name}</div>
-                          <div className="mt-1 truncate text-xs text-slate-500">{p.program}</div>
+                          <div className="truncate text-sm font-semibold text-slate-100">{p.name}</div>
+                          <div className="mt-1 truncate text-xs text-slate-400">{p.program}</div>
                         </div>
                         <Badge tone={getRiskTone(p.risk)}>{p.risk}</Badge>
                       </div>
@@ -816,17 +691,17 @@ function PipelineTab({ data, onSelectParticipant }) {
                           value={p.retentionProbability}
                           fillClassName={
                             p.retentionProbability >= 75
-                              ? "bg-emerald-600"
+                              ? "bg-emerald-400"
                               : p.retentionProbability >= 55
-                              ? "bg-amber-500"
-                              : "bg-rose-500"
+                              ? "bg-amber-400"
+                              : "bg-rose-400"
                           }
                         />
                       </div>
                     </button>
                   ))}
                   {(grouped[stage] || []).length === 0 && (
-                    <div className="rounded-xl border border-dashed border-slate-300 p-3 text-xs text-slate-400">No records</div>
+                    <div className="rounded-xl border border-dashed border-slate-700 p-3 text-xs text-slate-500">No records</div>
                   )}
                 </div>
               </div>
@@ -864,177 +739,192 @@ function ParticipantsTab({
   const selected = data.participants.find((p) => p.id === selectedParticipantId) || filtered[0] || data.participants[0];
 
   return (
-    <div className="grid grid-cols-1 gap-5 xl:grid-cols-[1.4fr_1fr]">
-      <Card>
-        <CardHeader
-          title="Participant Records"
-          subtitle="Searchable CRM table for leads, active participants, and renewals"
-          right={
-            <div className="flex items-center gap-2">
-              <Badge tone="blue">{filtered.length} shown</Badge>
-            </div>
-          }
-        />
-        <div className="border-b border-slate-100 p-4">
-          <div className="flex flex-col gap-3 md:flex-row">
-            <div className="relative flex-1">
-              <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
-              <input
-                value={search}
-                onChange={(e) => onSearchChange(e.target.value)}
-                placeholder="Search name, program, tags, ID..."
-                className="w-full rounded-xl border border-slate-200 bg-white py-2 pl-9 pr-3 text-sm shadow-sm focus:border-slate-400 focus:outline-none"
-              />
-            </div>
-            <select
-              value={filterStage}
-              onChange={(e) => onFilterStageChange(e.target.value)}
-              className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm shadow-sm"
-            >
-              <option value="all">All stages</option>
-              <option value="Lead">Lead</option>
-              <option value="Trial Booked">Trial Booked</option>
-              <option value="Active">Active</option>
-              <option value="At Risk">At Risk</option>
-              <option value="Completed">Completed</option>
-              <option value="Re-enrolled">Re-enrolled</option>
-            </select>
-          </div>
-        </div>
+    <div className="space-y-5">
+      <SectionIntro
+        icon={Users}
+        title="What this page shows"
+        description="A searchable participant CRM view. Judges can click a person and immediately see status, tasks, notes, and history."
+      />
 
-        <div className="max-h-[680px] overflow-auto">
-          <table className="min-w-full text-sm">
-            <thead className="sticky top-0 z-10 bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500">
-              <tr>
-                <th className="px-4 py-3">Participant</th>
-                <th className="px-4 py-3">Stage</th>
-                <th className="px-4 py-3">Risk</th>
-                <th className="px-4 py-3">Program</th>
-                <th className="px-4 py-3">Next Session</th>
-                <th className="px-4 py-3">Attendance</th>
-                <th className="px-4 py-3">Owner</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((p) => (
-                <tr
-                  key={p.id}
-                  onClick={() => onSelectParticipant(p.id)}
-                  className={cn(
-                    "cursor-pointer border-t border-slate-100 hover:bg-slate-50/70",
-                    selected?.id === p.id && "bg-slate-50"
-                  )}
-                >
-                  <td className="px-4 py-3">
-                    <div className="font-semibold text-slate-900">{p.name}</div>
-                    <div className="text-xs text-slate-500">{p.id} • {p.phone}</div>
-                  </td>
-                  <td className="px-4 py-3"><Badge tone={getStageTone(p.stage)}>{p.stage}</Badge></td>
-                  <td className="px-4 py-3"><Badge tone={getRiskTone(p.risk)}>{p.risk}</Badge></td>
-                  <td className="px-4 py-3 text-slate-700">{p.program}</td>
-                  <td className="px-4 py-3 text-slate-700">{p.nextSession}</td>
-                  <td className="px-4 py-3 text-slate-900">{p.attendanceRate}%</td>
-                  <td className="px-4 py-3 text-slate-700">{p.owner}</td>
+      <div className="grid grid-cols-1 gap-5 xl:grid-cols-[1.45fr_1fr]">
+        <Card>
+          <CardHeader
+            title="Participant records"
+            subtitle="Leads, active participants, and renewals in one place"
+            right={<Badge tone="blue">{filtered.length} shown</Badge>}
+          />
+          <div className="border-b border-slate-800 p-4">
+            <div className="flex flex-col gap-3 md:flex-row">
+              <div className="relative flex-1">
+                <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" />
+                <input
+                  value={search}
+                  onChange={(e) => onSearchChange(e.target.value)}
+                  placeholder="Search name, program, tags, ID..."
+                  className="w-full rounded-xl border border-slate-700 bg-slate-950 py-2 pl-9 pr-3 text-sm text-slate-100 shadow-sm placeholder:text-slate-500 focus:border-slate-500 focus:outline-none"
+                />
+              </div>
+              <select
+                value={filterStage}
+                onChange={(e) => onFilterStageChange(e.target.value)}
+                className="rounded-xl border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-100 shadow-sm"
+              >
+                <option value="all">All stages</option>
+                <option value="Lead">Lead</option>
+                <option value="Trial Booked">Trial Booked</option>
+                <option value="Active">Active</option>
+                <option value="At Risk">At Risk</option>
+                <option value="Completed">Completed</option>
+                <option value="Re-enrolled">Re-enrolled</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="max-h-[680px] overflow-auto">
+            <table className="min-w-full text-sm">
+              <thead className="sticky top-0 z-10 bg-slate-950 text-left text-xs uppercase tracking-wide text-slate-400">
+                <tr>
+                  <th className="px-4 py-3">Participant</th>
+                  <th className="px-4 py-3">Stage</th>
+                  <th className="px-4 py-3">Risk</th>
+                  <th className="px-4 py-3">Program</th>
+                  <th className="px-4 py-3">Next Session</th>
+                  <th className="px-4 py-3">Owner</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
-
-      <Card>
-        <CardHeader
-          title={selected ? `${selected.name} • Profile` : "Profile"}
-          subtitle={selected ? `${selected.program} • ${selected.cohortId}` : "Select a participant"}
-          right={selected ? <Badge tone={getStageTone(selected.stage)}>{selected.stage}</Badge> : null}
-        />
-        {selected ? (
-          <div className="space-y-4 p-4">
-            <div className="grid grid-cols-2 gap-3 text-sm">
-              <div className="rounded-xl border border-slate-200 p-3">
-                <div className="text-xs text-slate-500">Retention probability</div>
-                <div className="mt-1 text-xl font-bold text-slate-900">{selected.retentionProbability}%</div>
-                <div className="mt-2">
-                  <ProgressBar
-                    value={selected.retentionProbability}
-                    fillClassName={
-                      selected.retentionProbability >= 75
-                        ? "bg-emerald-600"
-                        : selected.retentionProbability >= 55
-                        ? "bg-amber-500"
-                        : "bg-rose-500"
-                    }
-                  />
-                </div>
-              </div>
-              <div className="rounded-xl border border-slate-200 p-3">
-                <div className="text-xs text-slate-500">Attendance rate</div>
-                <div className="mt-1 text-xl font-bold text-slate-900">{selected.attendanceRate}%</div>
-                <div className="mt-2 text-xs text-slate-500">Next: {selected.nextSession}</div>
-              </div>
-              <div className="rounded-xl border border-slate-200 p-3">
-                <div className="text-xs text-slate-500">Subsidy / payment</div>
-                <div className="mt-1 font-semibold text-slate-900">{selected.subsidyType}</div>
-                <div className="mt-1 text-xs text-slate-500">
-                  Balance / credit: {selected.balance < 0 ? `Credit ${formatCurrency(Math.abs(selected.balance))}` : formatCurrency(selected.balance)}
-                </div>
-              </div>
-              <div className="rounded-xl border border-slate-200 p-3">
-                <div className="text-xs text-slate-500">Owner</div>
-                <div className="mt-1 font-semibold text-slate-900">{selected.owner}</div>
-                <div className="mt-1 text-xs text-slate-500">{selected.lastTouch}</div>
-              </div>
-            </div>
-
-            <div className="rounded-xl border border-slate-200 p-3">
-              <div className="text-sm font-semibold text-slate-900">Tags</div>
-              <div className="mt-2 flex flex-wrap gap-2">
-                {selected.tags.map((t) => (
-                  <Badge key={t} tone="default">{t}</Badge>
-                ))}
-              </div>
-            </div>
-
-            <div className="rounded-xl border border-slate-200 p-3">
-              <div className="text-sm font-semibold text-slate-900">Open tasks</div>
-              <div className="mt-3 space-y-2">
-                {selected.tasks.length ? (
-                  selected.tasks.map((t) => (
-                    <div key={t.id} className="rounded-lg border border-slate-200 p-2.5">
-                      <div className="flex items-center justify-between gap-2">
-                        <div className="text-sm text-slate-800">{t.title}</div>
-                        <Badge tone={t.priority === "High" ? "red" : t.priority === "Medium" ? "amber" : "default"}>
-                          {t.priority}
-                        </Badge>
+              </thead>
+              <tbody>
+                {filtered.map((p) => (
+                  <tr
+                    key={p.id}
+                    onClick={() => onSelectParticipant(p.id)}
+                    className={cn(
+                      "cursor-pointer border-t border-slate-800 hover:bg-slate-950/70",
+                      selected?.id === p.id && "bg-slate-900/60"
+                    )}
+                  >
+                    <td className="px-4 py-3">
+                      <div className="font-semibold text-slate-100">{p.name}</div>
+                      <div className="text-xs text-slate-500">
+                        {p.id} • {p.phone}
                       </div>
-                      <div className="mt-1 text-xs text-slate-500">Due {t.due}</div>
-                    </div>
-                  ))
-                ) : (
-                  <div className="text-sm text-slate-500">No open tasks.</div>
-                )}
-              </div>
-            </div>
-
-            <div className="rounded-xl border border-slate-200 p-3">
-              <div className="text-sm font-semibold text-slate-900">Timeline</div>
-              <div className="mt-3 space-y-3">
-                {selected.timeline.map((e, idx) => (
-                  <div key={`${e.date}-${idx}`} className="flex gap-3">
-                    <div className="mt-1 h-2 w-2 shrink-0 rounded-full bg-slate-900" />
-                    <div>
-                      <div className="text-xs font-medium uppercase tracking-wide text-slate-500">{e.date} • {e.type}</div>
-                      <div className="text-sm text-slate-800">{e.note}</div>
-                    </div>
-                  </div>
+                    </td>
+                    <td className="px-4 py-3">
+                      <Badge tone={getStageTone(p.stage)}>{p.stage}</Badge>
+                    </td>
+                    <td className="px-4 py-3">
+                      <Badge tone={getRiskTone(p.risk)}>{p.risk}</Badge>
+                    </td>
+                    <td className="px-4 py-3 text-slate-300">{p.program}</td>
+                    <td className="px-4 py-3 text-slate-300">{p.nextSession}</td>
+                    <td className="px-4 py-3 text-slate-300">{p.owner}</td>
+                  </tr>
                 ))}
+              </tbody>
+            </table>
+          </div>
+        </Card>
+
+        <Card>
+          <CardHeader
+            title={selected ? `${selected.name} • Profile` : "Profile"}
+            subtitle={selected ? `${selected.program} • ${selected.cohortId}` : "Select a participant"}
+            right={selected ? <Badge tone={getStageTone(selected.stage)}>{selected.stage}</Badge> : null}
+          />
+          {selected ? (
+            <div className="space-y-4 p-4">
+              <div className="grid grid-cols-2 gap-3 text-sm">
+                <div className="rounded-xl border border-slate-800 bg-slate-950/40 p-3">
+                  <div className="text-xs text-slate-500">Retention probability</div>
+                  <div className="mt-1 text-xl font-bold text-slate-100">{selected.retentionProbability}%</div>
+                  <div className="mt-2">
+                    <ProgressBar
+                      value={selected.retentionProbability}
+                      fillClassName={
+                        selected.retentionProbability >= 75
+                          ? "bg-emerald-400"
+                          : selected.retentionProbability >= 55
+                          ? "bg-amber-400"
+                          : "bg-rose-400"
+                      }
+                    />
+                  </div>
+                </div>
+                <div className="rounded-xl border border-slate-800 bg-slate-950/40 p-3">
+                  <div className="text-xs text-slate-500">Attendance rate</div>
+                  <div className="mt-1 text-xl font-bold text-slate-100">{selected.attendanceRate}%</div>
+                  <div className="mt-2 text-xs text-slate-500">Next: {selected.nextSession}</div>
+                </div>
+                <div className="rounded-xl border border-slate-800 bg-slate-950/40 p-3">
+                  <div className="text-xs text-slate-500">Support / payment</div>
+                  <div className="mt-1 font-semibold text-slate-100">{selected.subsidyType}</div>
+                  <div className="mt-1 text-xs text-slate-500">
+                    Balance / credit:{" "}
+                    {selected.balance < 0
+                      ? `Credit ${formatCurrency(Math.abs(selected.balance))}`
+                      : formatCurrency(selected.balance)}
+                  </div>
+                </div>
+                <div className="rounded-xl border border-slate-800 bg-slate-950/40 p-3">
+                  <div className="text-xs text-slate-500">Owner</div>
+                  <div className="mt-1 font-semibold text-slate-100">{selected.owner}</div>
+                  <div className="mt-1 text-xs text-slate-500">{selected.lastTouch}</div>
+                </div>
+              </div>
+
+              <div className="rounded-xl border border-slate-800 bg-slate-950/40 p-3">
+                <div className="text-sm font-semibold text-slate-100">Tags</div>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {selected.tags.map((t) => (
+                    <Badge key={t} tone="default">
+                      {t}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+
+              <div className="rounded-xl border border-slate-800 bg-slate-950/40 p-3">
+                <div className="text-sm font-semibold text-slate-100">Open tasks</div>
+                <div className="mt-3 space-y-2">
+                  {selected.tasks.length ? (
+                    selected.tasks.map((t) => (
+                      <div key={t.id} className="rounded-lg border border-slate-800 p-2.5">
+                        <div className="flex items-center justify-between gap-2">
+                          <div className="text-sm text-slate-200">{t.title}</div>
+                          <Badge tone={t.priority === "High" ? "red" : t.priority === "Medium" ? "amber" : "default"}>
+                            {t.priority}
+                          </Badge>
+                        </div>
+                        <div className="mt-1 text-xs text-slate-500">Due {t.due}</div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="text-sm text-slate-500">No open tasks.</div>
+                  )}
+                </div>
+              </div>
+
+              <div className="rounded-xl border border-slate-800 bg-slate-950/40 p-3">
+                <div className="text-sm font-semibold text-slate-100">Timeline</div>
+                <div className="mt-3 space-y-3">
+                  {selected.timeline.map((e, idx) => (
+                    <div key={`${e.date}-${idx}`} className="flex gap-3">
+                      <div className="mt-1 h-2 w-2 shrink-0 rounded-full bg-slate-200" />
+                      <div>
+                        <div className="text-xs font-medium uppercase tracking-wide text-slate-500">
+                          {e.date} • {e.type}
+                        </div>
+                        <div className="text-sm text-slate-200">{e.note}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
-        ) : (
-          <div className="p-4 text-sm text-slate-500">No participant selected.</div>
-        )}
-      </Card>
+          ) : (
+            <div className="p-4 text-sm text-slate-500">No participant selected.</div>
+          )}
+        </Card>
+      </div>
     </div>
   );
 }
@@ -1042,9 +932,9 @@ function ParticipantsTab({
 function CommsTab({ data }) {
   const nudgeMix = [
     { name: "Reminders", value: 62 },
-    { name: "Missed-session rescue", value: 21 },
+    { name: "Rescue nudges", value: 21 },
     { name: "Milestone prompts", value: 11 },
-    { name: "Re-enrollment offers", value: 6 },
+    { name: "Re-enroll offers", value: 6 },
   ];
 
   const topTemplates = [
@@ -1052,65 +942,73 @@ function CommsTab({ data }) {
       name: "24h Reminder",
       purpose: "Reduce no-shows",
       sample: "Your class is tomorrow at 6:00 PM. Reply 1 to confirm, 2 to switch.",
-      performance: "Open 95% • Reply 18%",
+      performance: "High opens • moderate replies",
     },
     {
       name: "Missed-session Re-entry",
       purpose: "Prevent dropout after a miss",
       sample: "Missed you this week — no stress. Reply YES to save your spot.",
-      performance: "Open 93% • Reply 37%",
+      performance: "Strong reply rate",
     },
     {
       name: "Re-enrollment Offer",
       purpose: "Convert completers into next cycle",
       sample: "You completed your cohort 🎉 Want priority booking for next cycle?",
-      performance: "Open 92% • Reply 22%",
+      performance: "Good conversion touchpoint",
     },
   ];
 
   return (
     <div className="space-y-5">
-      <div className="grid grid-cols-1 gap-5 xl:grid-cols-3">
-        <Card className="xl:col-span-2">
-          <CardHeader title="Comms Performance by Week" subtitle="CRM comms panel: outreach volume, replies, and retention rescues" />
-          <div className="h-80 px-2 py-3">
+      <SectionIntro
+        icon={MessageSquare}
+        title="What this page shows"
+        description="Communication workflows tied to retention: reminders, rescue nudges, and re-enrollment messaging. It shows how outreach supports outcomes."
+      />
+
+      <div className="grid grid-cols-1 gap-5 xl:grid-cols-[1.35fr_0.65fr]">
+        <Card>
+          <CardHeader title="Comms trend" subtitle="Messages, replies, and retention rescues over time" />
+          <div className="h-72 px-2 py-3">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={data.commsByWeek} margin={{ top: 10, right: 16, left: 4, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                <XAxis dataKey="week" tick={{ fontSize: 12, fill: "#64748b" }} axisLine={false} tickLine={false} />
-                <YAxis tick={{ fontSize: 12, fill: "#64748b" }} axisLine={false} tickLine={false} />
-                <Tooltip contentStyle={{ borderRadius: 12, border: "1px solid #e2e8f0" }} />
-                <Legend />
-                <Line type="monotone" dataKey="reminders" name="Messages sent" stroke="#0f172a" strokeWidth={2.5} />
-                <Line type="monotone" dataKey="replies" name="Replies" stroke="#2563eb" strokeWidth={2.5} />
-                <Line type="monotone" dataKey="rescues" name="Retention rescues" stroke="#10b981" strokeWidth={2.5} />
+                <CartesianGrid strokeDasharray="3 3" stroke="#1f2937" />
+                <XAxis dataKey="week" tick={{ fontSize: 12, fill: "#94a3b8" }} axisLine={false} tickLine={false} />
+                <YAxis tick={{ fontSize: 12, fill: "#94a3b8" }} axisLine={false} tickLine={false} />
+                <Tooltip
+                  contentStyle={{ borderRadius: 12, border: "1px solid #334155", background: "#0f172a", color: "#e2e8f0" }}
+                />
+                <Legend wrapperStyle={{ color: "#cbd5e1" }} />
+                <Line type="monotone" dataKey="reminders" name="Messages" stroke="#e2e8f0" strokeWidth={2.5} />
+                <Line type="monotone" dataKey="replies" name="Replies" stroke="#60a5fa" strokeWidth={2.5} />
+                <Line type="monotone" dataKey="rescues" name="Rescues" stroke="#34d399" strokeWidth={2.5} />
               </LineChart>
             </ResponsiveContainer>
           </div>
         </Card>
 
         <Card>
-          <CardHeader title="Nudge Mix" subtitle="Communication purpose distribution" />
+          <CardHeader title="Nudge mix" subtitle="What messages are used for" />
           <div className="grid grid-cols-1 gap-2 p-4">
-            <div className="h-56">
+            <div className="h-52 rounded-xl border border-slate-800 bg-slate-950/40 p-2">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
-                  <Pie data={nudgeMix} dataKey="value" nameKey="name" outerRadius={75} innerRadius={42} paddingAngle={3}>
+                  <Pie data={nudgeMix} dataKey="value" nameKey="name" outerRadius={70} innerRadius={40} paddingAngle={3}>
                     {nudgeMix.map((entry, idx) => (
                       <Cell key={entry.name} fill={COLORS[idx % COLORS.length]} />
                     ))}
                   </Pie>
-                  <Tooltip contentStyle={{ borderRadius: 12, border: "1px solid #e2e8f0" }} />
+                  <Tooltip contentStyle={{ borderRadius: 12, border: "1px solid #334155", background: "#0f172a", color: "#e2e8f0" }} />
                 </PieChart>
               </ResponsiveContainer>
             </div>
             {nudgeMix.map((n, idx) => (
-              <div key={n.name} className="flex items-center justify-between rounded-lg border border-slate-200 px-3 py-2 text-sm">
+              <div key={n.name} className="flex items-center justify-between rounded-lg border border-slate-800 px-3 py-2 text-sm">
                 <div className="flex items-center gap-2">
                   <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: COLORS[idx % COLORS.length] }} />
-                  <span className="text-slate-700">{n.name}</span>
+                  <span className="text-slate-300">{n.name}</span>
                 </div>
-                <span className="font-medium text-slate-900">{n.value}%</span>
+                <span className="font-medium text-slate-100">{n.value}%</span>
               </div>
             ))}
           </div>
@@ -1118,15 +1016,17 @@ function CommsTab({ data }) {
       </div>
 
       <Card>
-        <CardHeader title="Template Library (CRM)" subtitle="Operational templates tied to funnel stages" />
+        <CardHeader title="Template examples" subtitle="Simple examples connected to the participant journey" />
         <div className="grid grid-cols-1 gap-4 p-4 md:grid-cols-3">
           {topTemplates.map((t) => (
-            <div key={t.name} className="rounded-2xl border border-slate-200 p-4">
+            <div key={t.name} className="rounded-2xl border border-slate-800 bg-slate-950/40 p-4">
               <div className="flex items-center justify-between gap-2">
-                <div className="text-sm font-semibold text-slate-900">{t.name}</div>
+                <div className="text-sm font-semibold text-slate-100">{t.name}</div>
                 <Badge tone="blue">{t.purpose}</Badge>
               </div>
-              <div className="mt-3 rounded-xl bg-slate-50 p-3 text-sm text-slate-700">{t.sample}</div>
+              <div className="mt-3 rounded-xl border border-slate-800 bg-slate-900 p-3 text-sm text-slate-300">
+                {t.sample}
+              </div>
               <div className="mt-3 text-xs text-slate-500">{t.performance}</div>
             </div>
           ))}
@@ -1137,8 +1037,6 @@ function CommsTab({ data }) {
 }
 
 function ProgramsTab({ data }) {
-  const tableRows = data.programs;
-
   const utilizationData = data.programs.map((p) => ({
     name: p.id.replace(/^[A-Z]+-/, ""),
     fill: Math.round((p.enrolled / Math.max(p.capacity, 1)) * 100),
@@ -1148,84 +1046,57 @@ function ProgramsTab({ data }) {
 
   return (
     <div className="space-y-5">
-      <Card>
-        <CardHeader title="Program / Cohort Operations" subtitle="CRM + operations view for classes, capacity, waitlists, and outcomes" />
-        <div className="overflow-x-auto">
-          <table className="min-w-full text-sm">
-            <thead className="bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500">
-              <tr>
-                <th className="px-4 py-3">Program</th>
-                <th className="px-4 py-3">Coach</th>
-                <th className="px-4 py-3">Enrollment</th>
-                <th className="px-4 py-3">Waitlist</th>
-                <th className="px-4 py-3">Attendance</th>
-                <th className="px-4 py-3">Retention</th>
-              </tr>
-            </thead>
-            <tbody>
-              {tableRows.map((p) => (
-                <tr key={p.id} className="border-t border-slate-100 hover:bg-slate-50/60">
-                  <td className="px-4 py-3">
-                    <div className="font-semibold text-slate-900">{p.title}</div>
-                    <div className="text-xs text-slate-500">{p.id}</div>
-                  </td>
-                  <td className="px-4 py-3 text-slate-700">{p.coach}</td>
-                  <td className="px-4 py-3">
-                    <div className="font-medium text-slate-900">{p.enrolled}/{p.capacity}</div>
-                    <div className="mt-1 w-28">
-                      <ProgressBar value={(p.enrolled / Math.max(p.capacity, 1)) * 100} />
-                    </div>
-                  </td>
-                  <td className="px-4 py-3 text-slate-700">{p.waitlist}</td>
-                  <td className="px-4 py-3 text-slate-900">{p.attendance}%</td>
-                  <td className="px-4 py-3 text-slate-900">{p.retention}%</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Card>
+      <SectionIntro
+        icon={Calendar}
+        title="What this page shows"
+        description="Program operations and outcomes in one view: capacity, waitlists, attendance, and retention. This helps judges see operational practicality."
+      />
 
-      <div className="grid grid-cols-1 gap-5 xl:grid-cols-2">
+      <div className="grid grid-cols-1 gap-5 xl:grid-cols-[1.15fr_0.85fr]">
         <Card>
-          <CardHeader title="Cohort Fill vs Outcomes" subtitle="Capacity management + participant outcomes in one view" />
-          <div className="h-80 px-2 py-3">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={utilizationData} margin={{ top: 10, right: 16, left: 4, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                <XAxis dataKey="name" tick={{ fontSize: 12, fill: "#64748b" }} axisLine={false} tickLine={false} />
-                <YAxis domain={[0, 100]} tick={{ fontSize: 12, fill: "#64748b" }} axisLine={false} tickLine={false} />
-                <Tooltip contentStyle={{ borderRadius: 12, border: "1px solid #e2e8f0" }} />
-                <Legend />
-                <Bar dataKey="fill" name="Fill %" fill="#94a3b8" radius={[6, 6, 0, 0]} />
-                <Bar dataKey="attendance" name="Attendance %" fill="#2563eb" radius={[6, 6, 0, 0]} />
-                <Bar dataKey="retention" name="Retention %" fill="#0f172a" radius={[6, 6, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
+          <CardHeader title="Cohort list" subtitle="Simple class operations view" />
+          <div className="space-y-3 p-4">
+            {data.programs.map((p) => (
+              <div key={p.id} className="rounded-xl border border-slate-800 bg-slate-950/40 p-4">
+                <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                  <div>
+                    <div className="text-sm font-semibold text-slate-100">{p.title}</div>
+                    <div className="mt-1 text-xs text-slate-500">
+                      {p.id} • Coach {p.coach}
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    <Badge tone="blue">
+                      {p.enrolled}/{p.capacity} filled
+                    </Badge>
+                    <Badge tone="purple">Waitlist {p.waitlist}</Badge>
+                    <Badge tone="green">Attendance {p.attendance}%</Badge>
+                    <Badge tone="default">Retention {p.retention}%</Badge>
+                  </div>
+                </div>
+                <div className="mt-3">
+                  <ProgressBar value={(p.enrolled / Math.max(p.capacity, 1)) * 100} fillClassName="bg-blue-400" />
+                </div>
+              </div>
+            ))}
           </div>
         </Card>
 
         <Card>
-          <CardHeader title="What this CRM demonstrates" subtitle="Judge-facing talking points" />
-          <div className="space-y-3 p-4 text-sm">
-            <div className="rounded-xl border border-slate-200 p-3">
-              <div className="font-semibold text-slate-900">Lead → participant continuity</div>
-              <p className="mt-1 text-slate-600">
-                One system tracks the whole journey instead of separate spreadsheets for intake, attendance, and subsidies.
-              </p>
-            </div>
-            <div className="rounded-xl border border-slate-200 p-3">
-              <div className="font-semibold text-slate-900">Intervention-ready operations</div>
-              <p className="mt-1 text-slate-600">
-                Staff can see exactly who needs a reminder, re-entry offer, or schedule swap.
-              </p>
-            </div>
-            <div className="rounded-xl border border-slate-200 p-3">
-              <div className="font-semibold text-slate-900">Public-sector alignment</div>
-              <p className="mt-1 text-slate-600">
-                Outcomes, access supports, and utilization can be shown in one reporting workflow.
-              </p>
-            </div>
+          <CardHeader title="Fill vs outcomes" subtitle="Capacity and outcome relationship (simplified)" />
+          <div className="h-80 px-2 py-3">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={utilizationData} margin={{ top: 10, right: 16, left: 4, bottom: 0 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#1f2937" />
+                <XAxis dataKey="name" tick={{ fontSize: 12, fill: "#94a3b8" }} axisLine={false} tickLine={false} />
+                <YAxis domain={[0, 100]} tick={{ fontSize: 12, fill: "#94a3b8" }} axisLine={false} tickLine={false} />
+                <Tooltip contentStyle={{ borderRadius: 12, border: "1px solid #334155", background: "#0f172a", color: "#e2e8f0" }} />
+                <Legend wrapperStyle={{ color: "#cbd5e1" }} />
+                <Bar dataKey="fill" name="Fill %" fill="#94a3b8" radius={[6, 6, 0, 0]} />
+                <Bar dataKey="attendance" name="Attendance %" fill="#60a5fa" radius={[6, 6, 0, 0]} />
+                <Bar dataKey="retention" name="Retention %" fill="#34d399" radius={[6, 6, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
           </div>
         </Card>
       </div>
@@ -1238,11 +1109,11 @@ function PhonePreviewPanel({ centreName, participant, collapsed, onToggle }) {
     <Card className="sticky top-4">
       <CardHeader
         title="Client App Preview"
-        subtitle="Interactive phone-side simulation embedded in the CRM"
+        subtitle="Participant-side mobile experience (dark mode demo)"
         right={
           <button
             onClick={onToggle}
-            className="rounded-lg border border-slate-200 px-2.5 py-1 text-xs font-medium text-slate-700 hover:bg-slate-50"
+            className="rounded-lg border border-slate-700 bg-slate-900 px-2.5 py-1 text-xs font-medium text-slate-300 hover:bg-slate-800"
           >
             {collapsed ? "Show" : "Hide"}
           </button>
@@ -1257,14 +1128,14 @@ function PhonePreviewPanel({ centreName, participant, collapsed, onToggle }) {
             exit={{ opacity: 0, height: 0 }}
             className="p-4"
           >
-            <div className="mb-3 rounded-xl border border-slate-200 bg-slate-50 p-3 text-xs text-slate-600">
-              <div className="font-semibold text-slate-800">Mirroring selected participant</div>
+            <div className="mb-3 rounded-xl border border-slate-800 bg-slate-950/40 p-3 text-xs text-slate-400">
+              <div className="font-semibold text-slate-200">Mirroring selected participant</div>
               <div className="mt-1">{participant ? `${participant.name} • ${participant.stage}` : "No participant selected"}</div>
               <div className="mt-1">{centreName}</div>
             </div>
             <ClientAppPreview participant={participant} centreName={centreName} />
             <div className="mt-3 text-xs text-slate-500">
-              Judges can click the phone tabs to see the participant-side experience (schedule, messages, rewards, check-in).
+              This links the staff CRM view to the participant experience (messages, schedule, rewards, check-in).
             </div>
           </motion.div>
         ) : (
@@ -1284,16 +1155,12 @@ function PhonePreviewPanel({ centreName, participant, collapsed, onToggle }) {
 }
 
 export default function ActiveLinkCrmDashboardDemo() {
-  const [selectedCentreId, setSelectedCentreId] = useState(centres[0].id);
+  const data = centre;
   const [selectedTab, setSelectedTab] = useState("overview");
-  const [selectedParticipantId, setSelectedParticipantId] = useState(centres[0].participants[0].id);
+  const [selectedParticipantId, setSelectedParticipantId] = useState(data.participants[0].id);
   const [phoneCollapsed, setPhoneCollapsed] = useState(false);
   const [search, setSearch] = useState("");
   const [filterStage, setFilterStage] = useState("all");
-  const [presentationMode, setPresentationMode] = useState("judges");
-  const [showNotes, setShowNotes] = useState(true);
-
-  const data = useCentreData(selectedCentreId);
 
   useEffect(() => {
     setSelectedParticipantId(data.participants[0]?.id || "");
@@ -1301,158 +1168,115 @@ export default function ActiveLinkCrmDashboardDemo() {
     setFilterStage("all");
   }, [data.id]);
 
-  const selectedParticipant = data.participants.find((p) => p.id === selectedParticipantId) || data.participants[0] || null;
+  const selectedParticipant =
+    data.participants.find((p) => p.id === selectedParticipantId) || data.participants[0] || null;
   const tabMeta = tabs.find((t) => t.id === selectedTab) || tabs[0];
+  const TabIcon = tabMeta.icon;
   const crmMetrics = buildCrmMetrics(data);
 
   return (
-    <div className="min-h-screen bg-slate-100 text-slate-900">
-      <div className="mx-auto max-w-[1600px] p-4 md:p-6">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-5 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm md:p-5"
-        >
-          <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
-            <div className="flex items-start gap-3">
-              <div className="rounded-2xl border border-blue-200 bg-blue-50 p-2.5">
-                <Sparkles className="h-6 w-6 text-blue-700" />
-              </div>
-              <div>
-                <div className="flex flex-wrap items-center gap-2">
-                  <h1 className="text-xl font-bold tracking-tight">ActiveLink CRM Demo</h1>
-                  <Badge tone="blue">Prototype / Fake Data</Badge>
-                  <Badge tone="purple">Judge-friendly</Badge>
-                </div>
-                <p className="mt-1 text-sm text-slate-600">
-                  Participant retention CRM for community recreation — intake, cohort management, interventions, and re-enrollment.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex flex-wrap items-end gap-3">
-              <SelectField
-                label="Centre"
-                value={selectedCentreId}
-                onChange={setSelectedCentreId}
-                options={centres.map((c) => ({ value: c.id, label: `${c.name} (${c.city})` }))}
-              />
-              <div className="flex flex-col gap-1">
-                <span className="text-xs font-medium text-slate-500">Presentation mode</span>
-                <Segmented
-                  value={presentationMode}
-                  onChange={setPresentationMode}
-                  options={[
-                    { label: "Judges", value: "judges" },
-                    { label: "Municipal", value: "municipal" },
-                  ]}
-                />
-              </div>
-              <button
-                onClick={() => setShowNotes((v) => !v)}
-                className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50"
-              >
-                {showNotes ? "Hide" : "Show"} notes
-              </button>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Notes */}
-        <AnimatePresence>
-          {showNotes && (
-            <motion.div
-              initial={{ opacity: 0, y: -6 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -6 }}
-              className={cn(
-                "mb-5 rounded-2xl border p-4 shadow-sm",
-                presentationMode === "judges" ? "border-amber-200 bg-amber-50" : "border-blue-200 bg-blue-50"
-              )}
-            >
-              <div className="flex items-start gap-3">
-                <div
-                  className={cn(
-                    "rounded-xl p-2",
-                    presentationMode === "judges" ? "bg-amber-100" : "bg-blue-100"
-                  )}
-                >
-                  <Filter className={cn("h-4 w-4", presentationMode === "judges" ? "text-amber-700" : "text-blue-700")} />
-                </div>
-                <div>
-                  <div className={cn("text-sm font-semibold", presentationMode === "judges" ? "text-amber-900" : "text-blue-900")}>
-                    {presentationMode === "judges" ? "Judge Demo Path" : "Municipal Buyer Demo Path"}
+    <div className="min-h-screen bg-slate-950 text-slate-100">
+      <div className="mx-auto max-w-[1800px] p-4 md:p-6">
+        <div className="grid grid-cols-1 gap-5 xl:grid-cols-[230px_minmax(0,1fr)_380px]">
+          {/* Left Sidebar Navigation */}
+          <aside className="xl:sticky xl:top-4 xl:h-[calc(100vh-2rem)]">
+            <Card className="h-full">
+              <div className="flex h-full flex-col">
+                <div className="border-b border-slate-800 p-4">
+                  <div className="flex items-start gap-3">
+                    <div className="rounded-2xl border border-blue-500/20 bg-blue-500/10 p-2.5">
+                      <Sparkles className="h-5 w-5 text-blue-300" />
+                    </div>
+                    <div>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <h1 className="text-base font-bold tracking-tight text-white">ActiveLink CRM</h1>
+                        <Badge tone="blue">Prototype</Badge>
+                      </div>
+                      <p className="mt-1 text-xs text-slate-400">
+                        Demo for community recreation retention workflows
+                      </p>
+                    </div>
                   </div>
-                  {presentationMode === "judges" ? (
-                    <ul className="mt-1 list-disc space-y-1 pl-4 text-sm text-amber-800">
-                      <li>Start on <b>CRM Overview</b> to show this is a real operating tool, not only charts.</li>
-                      <li>Click an <b>At-Risk</b> person, then show the <b>phone preview</b> to connect staff actions to participant UX.</li>
-                      <li>Use <b>Pipeline</b> to show lead-to-renewal lifecycle.</li>
-                      <li>Use <b>Comms</b> to explain why SMS-based workflows matter for retention rescue.</li>
-                    </ul>
-                  ) : (
-                    <ul className="mt-1 list-disc space-y-1 pl-4 text-sm text-blue-800">
-                      <li>Lead with <b>outcomes + utilization</b>, then drill into participant intervention workflow.</li>
-                      <li>Highlight <b>at-risk queue</b>, tasking, and audit-like timeline notes.</li>
-                      <li>Show <b>phone-side experience</b> as proof of participant engagement, not just admin reporting.</li>
-                    </ul>
-                  )}
+                </div>
+
+                <div className="p-3">
+                  <div className="mb-2 px-2 text-[11px] font-semibold uppercase tracking-wide text-slate-500">
+                    Navigation
+                  </div>
+                  <div className="space-y-1">
+                    {tabs.map((tab) => (
+                      <TabButton
+                        key={tab.id}
+                        label={tab.label}
+                        icon={tab.icon}
+                        active={selectedTab === tab.id}
+                        onClick={() => setSelectedTab(tab.id)}
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                <div className="mt-auto border-t border-slate-800 p-4">
+                  <div className="rounded-xl border border-slate-800 bg-slate-950/40 p-3">
+                    <div className="text-xs font-semibold text-slate-200">{data.name}</div>
+                    <div className="mt-1 text-xs text-slate-500">
+                      {data.city} • {data.municipalOwner}
+                    </div>
+                    <div className="mt-3 grid grid-cols-2 gap-2">
+                      <div className="rounded-lg border border-slate-800 p-2">
+                        <div className="text-[10px] text-slate-500">Active</div>
+                        <div className="text-sm font-semibold text-slate-100">{crmMetrics.active}</div>
+                      </div>
+                      <div className="rounded-lg border border-slate-800 p-2">
+                        <div className="text-[10px] text-slate-500">At-risk</div>
+                        <div className="text-sm font-semibold text-slate-100">{crmMetrics.atRisk}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Card>
+          </aside>
+
+          {/* Main Content */}
+          <main className="min-w-0">
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-5 rounded-2xl border border-slate-800 bg-slate-900/80 p-4 shadow-sm"
+            >
+              <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                <div className="flex items-center gap-2 text-sm">
+                  <TabIcon className="h-4 w-4 text-slate-300" />
+                  <span className="font-semibold text-slate-100">{tabMeta.label}</span>
+                  <ChevronRight className="h-4 w-4 text-slate-600" />
+                  <span className="text-slate-400">{data.name}</span>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-2">
+                  <Badge tone="green">
+                    <Users className="h-3.5 w-3.5" /> {crmMetrics.active} active
+                  </Badge>
+                  <Badge tone="red">
+                    <AlertTriangle className="h-3.5 w-3.5" /> {crmMetrics.atRisk} at risk
+                  </Badge>
+                  <Badge tone="purple">
+                    <Target className="h-3.5 w-3.5" /> {crmMetrics.leads} leads/trials
+                  </Badge>
                 </div>
               </div>
             </motion.div>
-          )}
-        </AnimatePresence>
 
-        {/* Tab Nav */}
-        <div className="mb-5 flex flex-wrap gap-2 rounded-2xl border border-slate-200 bg-slate-50 p-2">
-          {tabs.map((tab) => (
-            <TabButton
-              key={tab.id}
-              label={tab.label}
-              icon={tab.icon}
-              active={selectedTab === tab.id}
-              onClick={() => setSelectedTab(tab.id)}
-            />
-          ))}
-          <div className="ml-auto hidden items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs text-slate-500 lg:flex">
-            <Clock3 className="h-3.5 w-3.5" />
-            CRM demo walkthrough: 4–6 min
-          </div>
-        </div>
-
-        {/* Title strip */}
-        <motion.div layout className="mb-5 flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-3 shadow-sm">
-          <div className="flex items-center gap-2 text-sm">
-            <tabMeta.icon className="h-4 w-4 text-slate-700" />
-            <span className="font-semibold">{tabMeta.label}</span>
-            <ChevronRight className="h-4 w-4 text-slate-400" />
-            <span className="text-slate-500">{data.name}</span>
-          </div>
-          <div className="flex flex-wrap items-center gap-2">
-            <Badge tone="green"><Users className="h-3.5 w-3.5" /> {crmMetrics.active} active</Badge>
-            <Badge tone="red"><AlertTriangle className="h-3.5 w-3.5" /> {crmMetrics.atRisk} at risk</Badge>
-            <Badge tone="purple"><Target className="h-3.5 w-3.5" /> {crmMetrics.leads} leads/trials</Badge>
-          </div>
-        </motion.div>
-
-        {/* Main content + embedded phone preview */}
-        <div className="grid grid-cols-1 gap-5 2xl:grid-cols-[minmax(0,1fr)_390px]">
-          <div className="min-w-0">
             <AnimatePresence mode="wait">
               <motion.div
-                key={`${selectedTab}-${data.id}`}
+                key={selectedTab}
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -8 }}
                 transition={{ duration: 0.18 }}
               >
-                {selectedTab === "overview" && (
-                  <OverviewTab data={data} onSelectParticipant={setSelectedParticipantId} />
-                )}
-                {selectedTab === "pipeline" && (
-                  <PipelineTab data={data} onSelectParticipant={setSelectedParticipantId} />
-                )}
+                {selectedTab === "overview" && <OverviewTab data={data} onSelectParticipant={setSelectedParticipantId} />}
+                {selectedTab === "pipeline" && <PipelineTab data={data} onSelectParticipant={setSelectedParticipantId} />}
                 {selectedTab === "participants" && (
                   <ParticipantsTab
                     data={data}
@@ -1468,33 +1292,33 @@ export default function ActiveLinkCrmDashboardDemo() {
                 {selectedTab === "programs" && <ProgramsTab data={data} />}
               </motion.div>
             </AnimatePresence>
-          </div>
 
-          <div className="2xl:block">
+            <div className="mt-6 rounded-2xl border border-slate-800 bg-slate-900/80 p-4 shadow-sm">
+              <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                <div>
+                  <div className="text-sm font-semibold text-slate-100">Prototype Notes</div>
+                  <p className="mt-1 text-xs text-slate-500">
+                    Front-end demo only. All people, classes, metrics, and outcomes are illustrative fake data. No real participant data or backend.
+                  </p>
+                </div>
+                <div className="flex flex-wrap gap-2 text-xs">
+                  <Badge tone="blue">React + Tailwind</Badge>
+                  <Badge tone="purple">Framer Motion</Badge>
+                  <Badge tone="green">Recharts</Badge>
+                  <Badge tone="amber">Mobile preview linked to CRM</Badge>
+                </div>
+              </div>
+            </div>
+          </main>
+
+          {/* Right Phone Preview */}
+          <div className="min-w-0">
             <PhonePreviewPanel
               centreName={data.name}
               participant={selectedParticipant}
               collapsed={phoneCollapsed}
               onToggle={() => setPhoneCollapsed((v) => !v)}
             />
-          </div>
-        </div>
-
-        {/* Footer */}
-        <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-          <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-            <div>
-              <div className="text-sm font-semibold text-slate-900">Prototype Notes</div>
-              <p className="mt-1 text-xs text-slate-500">
-                Front-end demo only. All people, classes, metrics, and outcomes are illustrative fake data for presentations. No backend / no real participant data.
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-2 text-xs">
-              <Badge tone="blue">React + Tailwind</Badge>
-              <Badge tone="purple">Framer Motion</Badge>
-              <Badge tone="green">Recharts</Badge>
-              <Badge tone="amber">Embedded phone-side preview</Badge>
-            </div>
           </div>
         </div>
       </div>
